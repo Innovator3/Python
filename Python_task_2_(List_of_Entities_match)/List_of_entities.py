@@ -1,11 +1,16 @@
-import re
-
 def find_entities_in_text(text, person_info):
     entities = []
     for key, value in person_info.items():
-        matches = re.finditer(value.lower(), text.lower())
-        for match in matches:
-            entities.append([match.start(), match.end(), value])
+        value_lower = value.lower()
+        text_lower = text.lower()
+        start = 0
+        while start < len(text_lower):
+            start = text_lower.find(value_lower, start)
+            if start == -1:
+                break
+            end = start + len(value_lower)
+            entities.append([start, end, value])
+            start = end
     entities.sort()
     return entities
 
